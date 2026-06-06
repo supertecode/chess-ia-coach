@@ -16,8 +16,12 @@ COACH_ARROW_COLOR = "#ffaa00"
 
 def _build_messages(request: ChatRequest) -> list[dict]:
     """Assemble OpenAI-style messages: system prompt + history + context turn."""
+    best_move = request.analysis.best_move if request.analysis else None
     messages: list[dict] = [
-        {"role": "system", "content": build_system_prompt(request.language)}
+        {
+            "role": "system",
+            "content": build_system_prompt(request.mode, request.language, best_move),
+        }
     ]
     for turn in request.history:
         messages.append({"role": turn.role, "content": turn.content})

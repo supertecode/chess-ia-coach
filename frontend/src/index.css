@@ -29,3 +29,61 @@ body {
   font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
+
+/* Markdown rendering inside assistant chat bubbles. */
+.chat-markdown {
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.chat-markdown > :first-child {
+  margin-top: 0;
+}
+.chat-markdown > :last-child {
+  margin-bottom: 0;
+}
+.chat-markdown h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 12px 0 4px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  color: #f3f4f6;
+}
+.chat-markdown h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 8px 0 4px;
+  color: #f3f4f6;
+}
+.chat-markdown p {
+  margin-bottom: 8px;
+}
+.chat-markdown ul,
+.chat-markdown ol {
+  padding-left: 1.25rem;
+  margin-bottom: 8px;
+}
+.chat-markdown ul {
+  list-style: disc;
+}
+.chat-markdown ol {
+  list-style: decimal;
+}
+.chat-markdown li {
+  margin-bottom: 4px;
+}
+.chat-markdown strong {
+  color: #34d399;
+  font-weight: 600;
+}
+.chat-markdown a {
+  color: #34d399;
+  text-decoration: underline;
+}
+.chat-markdown code {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 1px 4px;
+  border-radius: 4px;
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 0.85em;
+}

@@ -68,6 +68,7 @@ cp .env.example .env      # then edit .env (Windows: copy .env.example .env)
 ```
 
 Edit `backend/.env`:
+
 - set `LLM_PROVIDER` and the matching API key,
 - set `STOCKFISH_PATH` to your Stockfish binary.
 
@@ -99,10 +100,10 @@ provider + keys, optional model overrides, Stockfish path/depth, ports, and
 ## Roadmap
 
 - **Phase 1** — Project scaffold ✅
-- **Phase 2** — Backend core (models, Stockfish service, LLM adapters, endpoints)
-- **Phase 3** — Frontend core (board, chat, controls, analysis bar, language switcher)
-- **Phase 4** — i18n strings (en / pt-BR)
-- **Phase 5** — Polish (typing indicator, responsive layout, last-move highlight, error handling)
+- **Phase 2** — Backend core (models, Stockfish service, LLM adapters, endpoints) ✅
+- **Phase 3** — Frontend core (board, chat, controls, analysis bar, language switcher) ✅
+- **Phase 4** — i18n strings (en / pt-BR) ✅
+- **Phase 5** — Polish (typing indicator, responsive layout, last-move highlight, error handling) ✅
 
 [react-chessboard]: https://github.com/Clariity/react-chessboard
 [chess.js]: https://github.com/jhlywa/chess.js

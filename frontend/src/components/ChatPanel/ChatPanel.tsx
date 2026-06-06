@@ -1,12 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
-import type { ChatMessage } from '../../types'
+import type { ChatMessage, CoachMode } from '../../types'
+import { ModeSelector } from '../ModeSelector/ModeSelector'
 
 interface ChatPanelProps {
   messages: ChatMessage[]
   isLoading: boolean
   error: string | null
+  mode: CoachMode
+  onModeChange: (mode: CoachMode) => void
   onSend: (text: string) => void
   onClear: () => void
 }
@@ -25,6 +30,8 @@ export function ChatPanel({
   messages,
   isLoading,
   error,
+  mode,
+  onModeChange,
   onSend,
   onClear,
 }: ChatPanelProps) {
@@ -45,15 +52,18 @@ export function ChatPanel({
 
   return (
     <div className="flex h-full flex-col rounded-lg border border-neutral-700 bg-neutral-900">
-      <header className="flex items-center justify-between border-b border-neutral-700 px-4 py-3">
-        <h2 className="text-sm font-semibold text-white">{t('chat.title')}</h2>
-        <button
-          type="button"
-          onClick={onClear}
-          className="text-xs text-neutral-400 hover:text-white"
-        >
-          {t('chat.clear')}
-        </button>
+      <header className="flex flex-col gap-2 border-b border-neutral-700 px-4 py-3">
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-semibold text-white">{t('chat.title')}</h2>
+          <button
+            type="button"
+            onClick={onClear}
+            className="text-xs text-neutral-400 hover:text-white"
+          >
+            {t('chat.clear')}
+          </button>
+        </div>
+        <ModeSelector mode={mode} onChange={onModeChange} />
       </header>
 
       <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-4">
@@ -65,15 +75,17 @@ export function ChatPanel({
             key={i}
             className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
-            <div
-              className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-3 py-2 text-sm ${
-                m.role === 'user'
-                  ? 'bg-emerald-600 text-white'
-                  : 'bg-neutral-800 text-neutral-100'
-              }`}
-            >
-              {m.content}
-            </div>
+            {m.role === 'user' ? (
+              <div className="max-w-[85%] whitespace-pre-wrap rounded-2xl bg-emerald-600 px-3 py-2 text-sm text-white">
+                {m.content}
+              </div>
+            ) : (
+              <div className="chat-markdown max-w-[85%] rounded-2xl bg-neutral-800 px-3 py-2 text-sm text-neutral-100">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {m.content}
+                </ReactMarkdown>
+              </div>
+            )}
           </div>
         ))}
         {isLoading && (

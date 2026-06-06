@@ -25,6 +25,9 @@ class ChatRequest(BaseModel):
     analysis: ChatAnalysisContext | None = None
     history: list[ChatMessage] = Field(default_factory=list)
     language: str = "en"
+    # Coaching mode: "quick" | "full" | "socratic" (unknown values fall back
+    # to full in build_system_prompt).
+    mode: str = "full"
 
     # Reserved for a future auth/user layer (kept optional by design).
     user_id: str | None = None

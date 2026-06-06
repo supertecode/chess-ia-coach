@@ -41,12 +41,15 @@ export interface ChatAnalysisContext {
   score?: Score | null
 }
 
+export type CoachMode = 'quick' | 'full' | 'socratic'
+
 export interface ChatRequest {
   message: string
   fen?: string
   analysis?: ChatAnalysisContext
   history?: ChatMessage[]
   language: string
+  mode: CoachMode
 }
 
 export interface ChatResponse {

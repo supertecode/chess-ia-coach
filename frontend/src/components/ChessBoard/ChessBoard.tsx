@@ -12,6 +12,8 @@ interface ChessBoardProps {
   arrows: ApiArrow[]
   lastMove: LastMove | null
   onMove: (from: string, to: string) => boolean
+  /** When false, dragging is disabled (e.g. browsing past positions). */
+  allowMoves?: boolean
 }
 
 const LAST_MOVE_HIGHLIGHT = { background: 'rgba(0, 255, 136, 0.28)' }
@@ -22,6 +24,7 @@ export function ChessBoard({
   arrows,
   lastMove,
   onMove,
+  allowMoves = true,
 }: ChessBoardProps) {
   const options = useMemo(() => {
     const squareStyles: Record<string, React.CSSProperties> = {}
@@ -43,16 +46,14 @@ export function ChessBoard({
       darkSquareStyle: { backgroundColor: '#769656' },
       lightSquareStyle: { backgroundColor: '#eeeed2' },
       animationDurationInMs: 200,
+      allowDragging: allowMoves,
       onPieceDrop: ({ sourceSquare, targetSquare }: PieceDropHandlerArgs) => {
         if (!targetSquare) return false
         return onMove(sourceSquare, targetSquare)
       },
     }
-  }, [fen, orientation, arrows, lastMove, onMove])
+  }, [fen, orientation, arrows, lastMove, onMove, allowMoves])
 
-  return (
-    <div className="w-full max-w-[560px]">
-      <Chessboard options={options} />
-    </div>
-  )
+  // Fills its parent; the parent is sized to a square via useSquareSize.
+  return <Chessboard options={options} />
 }

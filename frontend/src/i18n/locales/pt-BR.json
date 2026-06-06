@@ -2,6 +2,10 @@
   "app": {
     "title": "Chess AI Assistant"
   },
+  "common": {
+    "confirm": "Carregar",
+    "cancel": "Cancelar"
+  },
   "analysis": {
     "evaluation": "Avaliação",
     "thinking": "Analisando…"
@@ -10,7 +14,18 @@
     "turn": "Vez das {{side}}",
     "white": "brancas",
     "black": "pretas",
-    "over": "Fim de jogo"
+    "over": "Fim de jogo",
+    "readOnlyNotice": "Navegando no histórico — vá ao último lance para jogar"
+  },
+  "history": {
+    "title": "Lances",
+    "empty": "Nenhum lance ainda."
+  },
+  "nav": {
+    "start": "Ir para o início",
+    "back": "Lance anterior",
+    "forward": "Próximo lance",
+    "end": "Ir para o último lance"
   },
   "controls": {
     "newGame": "Novo jogo",
@@ -19,12 +34,22 @@
     "loadPgn": "Carregar PGN",
     "fenPlaceholder": "Cole uma string FEN…",
     "pgnPlaceholder": "Cole uma partida PGN…",
+    "pgnModalTitle": "Carregar PGN",
     "invalidFen": "FEN inválida.",
     "invalidPgn": "PGN inválido."
+  },
+  "modes": {
+    "quick": "Rápido",
+    "full": "Completa",
+    "socratic": "Socrático",
+    "quickLong": "Coach Rápido",
+    "fullLong": "Análise Completa",
+    "socraticLong": "Socrático"
   },
   "chat": {
     "title": "Treinador IA",
     "clear": "Limpar",
+    "greeting": "Olá! Sou seu treinador de xadrez. Faça um lance ou me pergunte sobre a posição.",
     "empty": "Pergunte ao treinador sobre a posição, planos ou táticas.",
     "placeholder": "Pergunte sobre esta posição…",
     "send": "Enviar"

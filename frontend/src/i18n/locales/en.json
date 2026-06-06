@@ -2,6 +2,10 @@
   "app": {
     "title": "Chess AI Assistant"
   },
+  "common": {
+    "confirm": "Load",
+    "cancel": "Cancel"
+  },
   "analysis": {
     "evaluation": "Evaluation",
     "thinking": "Analyzing…"
@@ -10,7 +14,18 @@
     "turn": "{{side}} to move",
     "white": "White",
     "black": "Black",
-    "over": "Game over"
+    "over": "Game over",
+    "readOnlyNotice": "Browsing history — go to last move to play"
+  },
+  "history": {
+    "title": "Moves",
+    "empty": "No moves yet."
+  },
+  "nav": {
+    "start": "Go to start",
+    "back": "Previous move",
+    "forward": "Next move",
+    "end": "Go to last move"
   },
   "controls": {
     "newGame": "New game",
@@ -19,12 +34,22 @@
     "loadPgn": "Load PGN",
     "fenPlaceholder": "Paste a FEN string…",
     "pgnPlaceholder": "Paste a PGN game…",
+    "pgnModalTitle": "Load PGN",
     "invalidFen": "Invalid FEN.",
     "invalidPgn": "Invalid PGN."
+  },
+  "modes": {
+    "quick": "Quick",
+    "full": "Full",
+    "socratic": "Socratic",
+    "quickLong": "Quick Coach",
+    "fullLong": "Full Analysis",
+    "socraticLong": "Socratic"
   },
   "chat": {
     "title": "AI Coach",
     "clear": "Clear",
+    "greeting": "Hi! I'm your chess coach. Make a move or ask me about the position.",
     "empty": "Ask the coach about the position, plans, or tactics.",
     "placeholder": "Ask about this position…",
     "send": "Send"
