@@ -1,0 +1,40 @@
+# Frontend requirements — Chess AI Assistant
+#
+# The frontend uses npm; this file documents the required toolchain and
+# packages for reference. To actually install everything, run:
+#
+#     npm install
+#
+# (npm reads package.json / package-lock.json, not this file.)
+
+# ---- Toolchain ----
+node >= 18
+npm >= 9
+
+# ---- Runtime dependencies ----
+react ^19.2.6
+react-dom ^19.2.6
+chess.js ^1.4.0                       # game logic & move validation
+react-chessboard ^5.10.0              # interactive board (v5 options API)
+axios ^1.17.0                         # HTTP client
+i18next ^26.3.1                       # i18n core
+react-i18next ^17.0.8                 # React bindings for i18next
+i18next-browser-languagedetector ^8.2.1
+react-markdown ^9.1.0                 # render LLM replies as Markdown
+remark-gfm ^4.0.1                     # GitHub-flavored Markdown support
+
+# ---- Build / dev toolchain ----
+vite ^8.0.12
+@vitejs/plugin-react ^6.0.1
+typescript ~6.0.2
+tailwindcss ^4.3.0                    # Tailwind v4 (CSS-first)
+@tailwindcss/vite ^4.3.0
+eslint ^10.3.0
+typescript-eslint ^8.59.2
+eslint-plugin-react-hooks ^7.1.1
+eslint-plugin-react-refresh ^0.5.2
+@eslint/js ^10.0.1
+globals ^17.6.0
+@types/react ^19.2.14
+@types/react-dom ^19.2.3
+@types/node ^24.12.3
