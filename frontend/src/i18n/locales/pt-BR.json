@@ -1,0 +1,32 @@
+{
+  "app": {
+    "title": "Chess AI Assistant"
+  },
+  "analysis": {
+    "evaluation": "Avaliação",
+    "thinking": "Analisando…"
+  },
+  "game": {
+    "turn": "Vez das {{side}}",
+    "white": "brancas",
+    "black": "pretas",
+    "over": "Fim de jogo"
+  },
+  "controls": {
+    "newGame": "Novo jogo",
+    "flip": "Girar tabuleiro",
+    "loadFen": "Carregar FEN",
+    "loadPgn": "Carregar PGN",
+    "fenPlaceholder": "Cole uma string FEN…",
+    "pgnPlaceholder": "Cole uma partida PGN…",
+    "invalidFen": "FEN inválida.",
+    "invalidPgn": "PGN inválido."
+  },
+  "chat": {
+    "title": "Treinador IA",
+    "clear": "Limpar",
+    "empty": "Pergunte ao treinador sobre a posição, planos ou táticas.",
+    "placeholder": "Pergunte sobre esta posição…",
+    "send": "Enviar"
+  }
+}

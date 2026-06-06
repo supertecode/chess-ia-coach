@@ -1,0 +1,38 @@
+# ---- Node / Frontend ----
+node_modules/
+frontend/dist/
+frontend/.vite/
+*.local
+
+# ---- Python / Backend ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- Stockfish engine binary (large; download per-machine) ----
+backend/engine/
+
+# ---- Environment & secrets ----
+.env
+backend/.env
+!.env.example
+
+# ---- Editors / OS ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# ---- Logs ----
+*.log
+npm-debug.log*
+
+# ---- Start Script ----
+start-dev.ps1
+start-dev.cmd

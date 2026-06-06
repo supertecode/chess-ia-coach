@@ -1,0 +1,32 @@
+{
+  "app": {
+    "title": "Chess AI Assistant"
+  },
+  "analysis": {
+    "evaluation": "Evaluation",
+    "thinking": "Analyzing…"
+  },
+  "game": {
+    "turn": "{{side}} to move",
+    "white": "White",
+    "black": "Black",
+    "over": "Game over"
+  },
+  "controls": {
+    "newGame": "New game",
+    "flip": "Flip board",
+    "loadFen": "Load FEN",
+    "loadPgn": "Load PGN",
+    "fenPlaceholder": "Paste a FEN string…",
+    "pgnPlaceholder": "Paste a PGN game…",
+    "invalidFen": "Invalid FEN.",
+    "invalidPgn": "Invalid PGN."
+  },
+  "chat": {
+    "title": "AI Coach",
+    "clear": "Clear",
+    "empty": "Ask the coach about the position, plans, or tactics.",
+    "placeholder": "Ask about this position…",
+    "send": "Send"
+  }
+}

@@ -1,0 +1,31 @@
+@import 'tailwindcss';
+
+/* Dark theme tokens for the Chess AI Assistant, inspired by Lichess. */
+@theme {
+  --color-board-dark: #769656;
+  --color-board-light: #eeeed2;
+  --color-bg: #16171d;
+  --color-surface: #1f2028;
+  --color-surface-2: #2a2c36;
+  --color-border: #2e303a;
+  --color-accent: #00ff88;
+  --color-accent-warn: #ffaa00;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--color-bg);
+  color: #e5e7eb;
+  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
