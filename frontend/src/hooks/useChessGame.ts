@@ -1,8 +1,10 @@
 import { useCallback, useRef, useState } from 'react'
+import type { CSSProperties } from 'react'
 import { Chess } from 'chess.js'
-import type { Move } from 'chess.js'
+import type { Move, Square } from 'chess.js'
 
 export type BoardOrientation = 'white' | 'black'
+export type PromotionPiece = 'q' | 'r' | 'b' | 'n'
 
 export interface MoveHistoryEntry {
   san: string
@@ -18,6 +20,12 @@ export interface LastMove {
   to: string
 }
 
+export interface PendingPromotion {
+  from: string
+  to: string
+  color: 'w' | 'b'
+}
+
 export interface UseChessGame {
   /** FEN of the position currently being viewed (may be a past position). */
   fen: string
@@ -29,7 +37,15 @@ export interface UseChessGame {
   currentIndex: number
   /** True when viewing a past position (board is read-only). */
   isViewingHistory: boolean
-  makeMove: (from: string, to: string, promotion?: string) => boolean
+  /** Set while waiting for the user to pick a promotion piece. */
+  pendingPromotion: PendingPromotion | null
+  /** Square styles for the selected piece + its legal destinations. */
+  legalMoveSquares: Record<string, CSSProperties>
+  /** Click-to-move + legal-move preview handler. */
+  onSquareClick: (square: string) => void
+  makeMove: (from: string, to: string) => boolean
+  confirmPromotion: (piece: PromotionPiece) => void
+  cancelPromotion: () => void
   loadFen: (fen: string) => boolean
   loadPgn: (pgn: string) => boolean
   reset: () => void
@@ -69,6 +85,17 @@ export function useChessGame(): UseChessGame {
   const [history, setHistory] = useState<MoveHistoryEntry[]>([])
   const [currentIndex, setCurrentIndex] = useState(-1)
   const [orientation, setOrientation] = useState<BoardOrientation>('white')
+  const [pendingPromotion, setPendingPromotion] =
+    useState<PendingPromotion | null>(null)
+  const [selectedSquare, setSelectedSquare] = useState<string | null>(null)
+  const [legalMoveSquares, setLegalMoveSquares] = useState<
+    Record<string, CSSProperties>
+  >({})
+
+  const clearSelection = useCallback(() => {
+    setSelectedSquare(null)
+    setLegalMoveSquares({})
+  }, [])
 
   const atEnd = currentIndex === history.length - 1
   const isViewingHistory = currentIndex < history.length - 1
@@ -81,21 +108,106 @@ export function useChessGame(): UseChessGame {
       ? { from: history[currentIndex].from, to: history[currentIndex].to }
       : null
 
-  const makeMove = useCallback(
-    (from: string, to: string, promotion = 'q'): boolean => {
-      // Only the live (last) position is playable.
-      if (currentIndex !== history.length - 1) return false
+  /** Would moving from→to be a pawn promotion in the current position? */
+  const isPromotion = useCallback(
+    (from: string, to: string): boolean => {
+      const piece = game.get(from as Square)
+      if (!piece || piece.type !== 'p') return false
+      return (
+        (piece.color === 'w' && to[1] === '8') ||
+        (piece.color === 'b' && to[1] === '1')
+      )
+    },
+    [game],
+  )
+
+  /** Executes a move on the live engine and appends it to history. */
+  const doMove = useCallback(
+    (from: string, to: string, promotion: PromotionPiece = 'q'): boolean => {
       try {
         const move = game.move({ from, to, promotion })
         setHistory((h) => [...h, toEntry(move)])
         setCurrentIndex((i) => i + 1)
+        clearSelection()
         return true
       } catch {
         return false
       }
     },
-    [game, currentIndex, history.length],
+    [game, clearSelection],
   )
+
+  const makeMove = useCallback(
+    (from: string, to: string): boolean => {
+      // Only the live (last) position is playable.
+      if (currentIndex !== history.length - 1) return false
+      if (isPromotion(from, to)) {
+        const color = game.get(from as Square)?.color ?? 'w'
+        setPendingPromotion({ from, to, color })
+        // Return false so the dragged pawn snaps back; the real move happens
+        // once the user picks a piece in the promotion dialog.
+        return false
+      }
+      return doMove(from, to)
+    },
+    [game, currentIndex, history.length, isPromotion, doMove],
+  )
+
+  const confirmPromotion = useCallback(
+    (piece: PromotionPiece) => {
+      if (!pendingPromotion) return
+      doMove(pendingPromotion.from, pendingPromotion.to, piece)
+      setPendingPromotion(null)
+    },
+    [pendingPromotion, doMove],
+  )
+
+  const onSquareClick = useCallback(
+    (square: string) => {
+      // No selection / click-to-move while browsing past positions.
+      if (isViewingHistory) return
+
+      // A piece is selected and this square is a legal destination → move.
+      if (selectedSquare && square !== selectedSquare && legalMoveSquares[square]) {
+        makeMove(selectedSquare, square)
+        clearSelection()
+        return
+      }
+
+      const piece = game.get(square as Square)
+      // Re-clicking the selected piece (or selecting own piece) toggles/selects.
+      if (piece && piece.color === game.turn()) {
+        if (square === selectedSquare) {
+          clearSelection()
+          return
+        }
+        const highlights: Record<string, CSSProperties> = {
+          [square]: { backgroundColor: 'rgba(255, 255, 100, 0.4)' },
+        }
+        for (const move of game.moves({ square: square as Square, verbose: true })) {
+          highlights[move.to] = move.captured
+            ? {
+                boxShadow: 'inset 0 0 0 4px rgba(255, 100, 100, 0.7)',
+                borderRadius: '2px',
+              }
+            : {
+                background:
+                  'radial-gradient(circle, rgba(0,0,0,0.25) 25%, transparent 26%)',
+                borderRadius: '50%',
+              }
+        }
+        setSelectedSquare(square)
+        setLegalMoveSquares(highlights)
+        return
+      }
+
+      // Clicked elsewhere → deselect.
+      clearSelection()
+    },
+    [isViewingHistory, selectedSquare, legalMoveSquares, game, makeMove, clearSelection],
+  )
+
+  const cancelPromotion = useCallback(() => setPendingPromotion(null), [])
 
   const loadFen = useCallback(
     (next: string): boolean => {
@@ -104,12 +216,14 @@ export function useChessGame(): UseChessGame {
         setInitialFen(game.fen())
         setHistory([])
         setCurrentIndex(-1)
+        setPendingPromotion(null)
+        clearSelection()
         return true
       } catch {
         return false
       }
     },
-    [game],
+    [game, clearSelection],
   )
 
   const loadPgn = useCallback(
@@ -121,12 +235,14 @@ export function useChessGame(): UseChessGame {
         setInitialFen(verbose.length ? verbose[0].before : game.fen())
         setHistory(entries)
         setCurrentIndex(entries.length - 1)
+        setPendingPromotion(null)
+        clearSelection()
         return true
       } catch {
         return false
       }
     },
-    [game],
+    [game, clearSelection],
   )
 
   const reset = useCallback(() => {
@@ -134,7 +250,9 @@ export function useChessGame(): UseChessGame {
     setInitialFen(START_FEN)
     setHistory([])
     setCurrentIndex(-1)
-  }, [game])
+    setPendingPromotion(null)
+    clearSelection()
+  }, [game, clearSelection])
 
   const flip = useCallback(() => {
     setOrientation((o) => (o === 'white' ? 'black' : 'white'))
@@ -143,8 +261,9 @@ export function useChessGame(): UseChessGame {
   const goToMove = useCallback(
     (index: number) => {
       setCurrentIndex(Math.max(-1, Math.min(index, history.length - 1)))
+      clearSelection()
     },
-    [history.length],
+    [history.length, clearSelection],
   )
 
   const goBack = useCallback(
@@ -170,7 +289,12 @@ export function useChessGame(): UseChessGame {
     history,
     currentIndex,
     isViewingHistory,
+    pendingPromotion,
+    legalMoveSquares,
+    onSquareClick,
     makeMove,
+    confirmPromotion,
+    cancelPromotion,
     loadFen,
     loadPgn,
     reset,

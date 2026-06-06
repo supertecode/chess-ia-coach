@@ -6,6 +6,13 @@
     "confirm": "Carregar",
     "cancel": "Cancelar"
   },
+  "promotion": {
+    "title": "Promover peão",
+    "queen": "Dama",
+    "rook": "Torre",
+    "bishop": "Bispo",
+    "knight": "Cavalo"
+  },
   "analysis": {
     "evaluation": "Avaliação",
     "thinking": "Analisando…"
@@ -26,6 +33,10 @@
     "back": "Lance anterior",
     "forward": "Próximo lance",
     "end": "Ir para o último lance"
+  },
+  "board": {
+    "showBestMove": "Mostrar melhor lance",
+    "hideBestMove": "Ocultar melhor lance"
   },
   "controls": {
     "newGame": "Novo jogo",

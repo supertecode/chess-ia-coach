@@ -6,6 +6,13 @@
     "confirm": "Load",
     "cancel": "Cancel"
   },
+  "promotion": {
+    "title": "Promote pawn",
+    "queen": "Queen",
+    "rook": "Rook",
+    "bishop": "Bishop",
+    "knight": "Knight"
+  },
   "analysis": {
     "evaluation": "Evaluation",
     "thinking": "Analyzing…"
@@ -26,6 +33,10 @@
     "back": "Previous move",
     "forward": "Next move",
     "end": "Go to last move"
+  },
+  "board": {
+    "showBestMove": "Show best move",
+    "hideBestMove": "Hide best move"
   },
   "controls": {
     "newGame": "New game",
